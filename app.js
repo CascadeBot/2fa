@@ -6,7 +6,6 @@ const session = require('express-session');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
-const bodyParser = require('body-parser');
 
 const owners = ['215644829969809421', '203894491784937472', '203894491784937472'];
 
@@ -46,8 +45,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+app.use(express.json());
+app.use(express.urlencoded({
     extended: true
 }));
 
