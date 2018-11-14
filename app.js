@@ -6,6 +6,7 @@ const session = require('express-session');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const bodyParser = require('body-parser');
 
 const owners = ['215644829969809421', '203894491784937472', '203894491784937472'];
 
@@ -45,6 +46,10 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.use('/discord', passport.authenticate('discord', {failureRedirect: '/'}), function (req, res) {
     res.redirect('/2fa');
@@ -72,6 +77,7 @@ infoRouter.get('/', function (req, res) {
         });
         return;
     }
+
     if(!owners.includes(req.user.id)) {
         res.json({
             error: 'not a owner'
@@ -113,6 +119,27 @@ infoRouter.get('/:key', function (req, res) {
             json['code'] = newToken;
             res.json(json);
         }
+    });
+});
+
+app.use('/add', function (req, res) {
+    if(!req.isAuthenticated()) {
+        res.redirect('/');
+        return;
+    }
+    if(!owners.includes(req.user.id)) {
+        res.redirect('/');
+        return;
+    }
+
+    var name = req.body.name;
+
+    fs.writeFile("keys/" + name + ".json", JSON.stringify(req.body), function (err) {
+        if(err) {
+            res.redirect('/2fa?error=' + err);
+            return;
+        }
+        res.redirect('/2fa');
     });
 });
 

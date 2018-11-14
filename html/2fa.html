@@ -9,6 +9,19 @@
 </head>
 <body>
     <div class="container-right" id="2fa-container">
+        <div id="header">
+            <form id="form" action="/add" method="post">
+                <div style="width: 100%">
+                    <label style="width: 25%" for="name">Name:</label>
+                    <input style="width: 75%" type="text" id="name" name="name" placeholder="Name">
+                </div>
+                <div style="width: 100%">
+                    <label style="width: 25%" for="secret">Secret:</label>
+                    <input style="width: 75%" type="password" name="secret" id="secret" placeholder="Secret">
+                </div>
+                <input style="width: 100%" type="submit" value="Add Code" />
+            </form>
+        </div>
         <div id="template" class="item">
             <h1></h1>
             <hr>
@@ -21,7 +34,6 @@
         </div>
     </div>
 <!-- TODO:
-        Timer
         Adding codes without manually adding the json file-->
 </body>
 </html>
