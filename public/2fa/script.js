@@ -20,16 +20,7 @@ $(document).ready(function () {
                             item.find("h1").text(data['name']);
                             item.find("h3").text(data['code']);
                             var timer = item.find(".timer svg circle");
-                            var date = new Date;
-                            var seconds = date.getSeconds();
-                            var time = seconds % 30;
-                            var animate = 30 - time;
-                            console.log("animating with time " + animate);
-                            timer.css("stroke-dashoffset", "0");
-                            timer.animate({
-                                    'stroke-dashoffset': '113'
-                                },
-                                animate * 1000);
+                            runAnimate(timer);
                             container.append(item);
                         },
                         error: function (jqXHR, starts, error) {
@@ -51,12 +42,7 @@ $(document).ready(function () {
                     var item = $("#" + data['name']);
                     if(item.find("h3").text() !== data['code']) {
                         var timer = $(".timer svg circle");
-                        timer.stop();
-                        timer.css("stroke-dashoffset", "0");
-                        timer.animate({
-                                'stroke-dashoffset': '113'
-                            },
-                            30000);
+                        runAnimate(timer);
                         item.find("h1").text(data['name']);
                         item.find("h3").text(data['code']);
                     }
@@ -66,4 +52,18 @@ $(document).ready(function () {
                 }});
         }
     }, 1000);
+
+    function runAnimate(timer) {
+        timer.stop();
+        var date = new Date;
+        var seconds = date.getSeconds();
+        var time = seconds % 30;
+        var animate = 30 - time;
+        console.log("animating with time " + animate);
+        timer.css("stroke-dashoffset", "0");
+        timer.animate({
+                'stroke-dashoffset': '113'
+            },
+            animate * 1000);
+    }
 });
