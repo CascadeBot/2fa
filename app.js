@@ -113,7 +113,7 @@ infoRouter.get('/:key', function (req, res) {
             json['code'] = newToken;
             res.json(json);
         }
-    })
+    });
 });
 
 app.use('/info', infoRouter);
@@ -121,6 +121,7 @@ app.use('/info', infoRouter);
 app.use('/', function (req, res) {
     res.sendFile(path.join(__dirname+'/html/index.html'));
 });
+
 
 var server = http.createServer(app);
 server.listen(3000);

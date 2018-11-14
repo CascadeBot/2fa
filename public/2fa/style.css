@@ -21,8 +21,28 @@ body {
 }
 
 .timer {
-    position: relative;
-    right: -100px;
-    top: -40px;
-    width: 50px;
+    margin: -50px auto auto;
+    height: 40px;
+    width: 40px;
+    text-align: center;
 }
+
+.timer svg {
+    transform: rotateY(-180deg) rotateZ(-90deg);
+    position: relative;
+    top: 0;
+    right: -70px;
+    width: 40px;
+    height: 40px;
+}
+
+.timer svg circle {
+    stroke-dasharray: 113px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 2px;
+    fill: none;
+    stroke: blue;
+}
+
+
