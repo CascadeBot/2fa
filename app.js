@@ -6,6 +6,9 @@ const session = require('express-session');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const yml = require('js-yaml');
+
+var doc = yml.safeLoad(fs.readFileSync('config.yml', 'utf8'));
 
 const owners = ['215644829969809421', '203894491784937472', '203894491784937472'];
 
@@ -20,9 +23,9 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use('discord', new DiscordStrategy({
-        clientID: '488439593302097930',
-        clientSecret: 'bCbxoSVYZCuV_ejNvB6lEba1roR-kV-A',
-        callbackURL: 'http://localhost:3000/discord',
+        clientID: doc['id'],
+        clientSecret: doc['secret'],
+        callbackURL: doc['url'],
         scope: scopes
     },
     function (accessToken, refreshToke, profile, done) {
