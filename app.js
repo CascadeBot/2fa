@@ -96,6 +96,64 @@ infoRouter.get('/', function (req, res) {
     });
 });
 
+infoRouter.get('/backup/:key', function (req, res) {
+    if(!req.isAuthenticated()) {
+        res.json({
+            error: 'not authenticated'
+        });
+        return;
+    }
+    if(!owners.includes(req.user.id)) {
+        res.json({
+            error: 'not a owner'
+        });
+        return;
+    }
+
+    var key = req.params.key;
+    fs.readFile('keys/' + key, function (err, data) {
+        if (err) {
+            res.json({error: err});
+        } else {
+            var json = JSON.parse(data);
+            if(json.hasOwnProperty('codes')) {
+                res.json(json.codes);
+            }
+        }
+    });
+});
+
+infoRouter.post('/backup/:key', function (req, res) {
+    if(!req.isAuthenticated()) {
+        res.json({
+            error: 'not authenticated'
+        });
+        return;
+    }
+    if(!owners.includes(req.user.id)) {
+        res.json({
+            error: 'not a owner'
+        });
+        return;
+    }
+
+    var key = req.params.key;
+    fs.readFile('keys/' + key, function (err, data) {
+        if(err) {
+            res.json({error: err});
+        } else {
+            var json = JSON.parse(data);
+            if(json.hasOwnProperty('codes')) {
+                var codes = json.codes;
+                codes.addAll(req.body.codes)
+            } else {
+                json.codes = req.body.codes;
+            }
+            res.json({success: true});
+        }
+    });
+});
+
 infoRouter.get('/:key', function (req, res) {
     if(!req.isAuthenticated()) {
         res.json({
@@ -118,6 +176,7 @@ infoRouter.get('/:key', function (req, res) {
             var secret = json['secret'];
             var newToken = tfa.generateToken(secret).token;
             json['secret'] = null;
+            json['codes'] = null;
             json['code'] = newToken;
             res.json(json);
         }

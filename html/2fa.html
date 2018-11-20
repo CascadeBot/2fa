@@ -22,7 +22,8 @@
                 <input style="width: 100%" type="submit" value="Add Code" />
             </form>
         </div>
-        <div id="template" class="item">
+        <div id="template" class="item tooltip"><!--
+            <span class="tooltiptext">Click on me to see backup codes</span>-->
             <h1></h1>
             <hr>
             <h3></h3>
@@ -31,9 +32,15 @@
                     <circle r="18" cx="20" cy="20"></circle>
                 </svg>
             </div>
+            <hr>
+            <button class="codes-button">Click for backup Codes</button>
+            <div class="codes-container" style="visibility: hidden">
+                <hr>
+                <ul class="codes">
+
+                </ul>
+            </div>
         </div>
     </div>
-<!-- TODO:
-        Adding codes without manually adding the json file-->
 </body>
 </html>

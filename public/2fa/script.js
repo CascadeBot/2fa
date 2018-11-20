@@ -19,6 +19,9 @@ $(document).ready(function () {
                             item.attr("id", data['name']);
                             item.find("h1").text(data['name']);
                             item.find("h3").text(data['code']);
+                            item.find(".codes-button").click(function (e) {
+                                itemClick(data['name']);
+                            });
                             var timer = item.find(".timer svg circle");
                             runAnimate(timer);
                             container.append(item);
@@ -65,5 +68,34 @@ $(document).ready(function () {
                 'stroke-dashoffset': '113'
             },
             animate * 1000);
+    }
+    var clicked = {};
+    function itemClick(name) {
+        console.log(name);
+        if(clicked['name']) {
+            clicked['name'] = false;
+            var item = $("#" + name);
+            item.find('.codes-button').text('Click for backup Codes');
+            var codes = item.find('.codes');
+            item.find('.codes-container').css('visibility', 'hidden');
+            codes.html('');
+        } else {
+            clicked['name'] = true;
+            $.ajax({
+                url: '/info/backup/' + name + '.json', success: function (data, status, jqXHR) {
+                    var item = $("#" + name);
+                    item.find('.codes-button').text('Click to hide codes');
+                    var codes = item.find('.codes');
+                    var html = '';
+                    item.find('.codes-container').css('visibility', 'visible');
+                    for (var key in data) {
+                        html += "<li><input type='checkbox'> " + data[key] + "</li>";
+                    }
+                    codes.html(html);
+                }, error: function (jqXHR, starts, error) {
+                    console.log(error);
+                }
+            });
+        }
     }
 });
